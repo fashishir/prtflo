@@ -56,6 +56,7 @@
             letter-spacing: 1px;
             background: var(--gradient);
             -webkit-background-clip: text;
+            background-clip: text; 
             -webkit-text-fill-color: transparent;
         }
 
@@ -106,7 +107,7 @@
             margin-bottom: 50px;
             text-align: center;
             background: var(--gradient);
-            -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
@@ -186,7 +187,7 @@
 
         .dynamic-text {
             background: var(--gradient);
-            -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             font-weight: 700;
         }
@@ -411,9 +412,9 @@
         </div>
     </section>
 
-    <section id="experience">
+    <section id="experience" class="hidden">
         <h2 class="section-title hidden">Where I've Worked</h2>
-        
+
         <div class="experience-card hidden">
             <h4>Data Assistant @ Directorate General of Health Services</h4>
             <span class="date">Jun 2020 - Dec 2024 | Covid-19 ERPP Project</span>
@@ -429,6 +430,12 @@
     <section id="projects">
         <h2 class="section-title hidden">Things I've Built</h2>
         <div class="projects-grid">
+            <div class="project-card hidden">
+                <h4>Lotus Party Center</h4>
+                <p>A modern Wedding Party and Convention center Website built using modern web technologies including Raw JavaScript for a seamless user experience.</p>
+                <a href="https://lotus-party-center.netlify.app/" target="_blank" rel="noopener">View Project &rarr;</a>
+            </div> 
+            </div>
             <div class="project-card hidden">
                 <h4>Movie Cloudbd</h4>
                 <p>A full-featured Movie Download Website built using modern web technologies including Raw JavaScript for a seamless user experience.</p>
@@ -469,8 +476,8 @@
         <h2 class="section-title hidden" style="font-size: 2rem;">Let's Connect</h2>
         <div class="social-links hidden">
             <a href="mailto:fashishir4@gmail.com">Email Me</a>
-            <a href="https://github.com/fashishir" target="_blank">GitHub</a>
-            <a href="https://gitlab.com/fashishir4" target="_blank">GitLab</a>
+            <a href="https://github.com/fashishir" target="_blank" rel="noopener">GitHub</a>
+            <a href="https://gitlab.com/fashishir4" target="_blank" rel="noopener">GitLab</a>
             <span style="color: var(--text-main); font-weight: 600;">| Mobile: 01407587330</span>
         </div>
         <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 30px;" class="hidden">© 2024 A.K.M Faridul Alam. All rights reserved.</p>
