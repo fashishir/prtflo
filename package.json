@@ -1,0 +1,15 @@
+{
+  "name": "akm-faridul-alam-portfolio",
+  "version": "2.0.0",
+  "description": "Glossy-black 3D interactive portfolio for A.K.M Faridul Alam",
+  "author": "A.K.M Faridul Alam",
+  "license": "MIT",
+  "scripts": {
+    "build": "sass scss/main.scss css/main.css --style=compressed --no-source-map",
+    "watch": "sass --watch scss/main.scss css/main.css --no-source-map",
+    "start": "npx serve . -l 5173"
+  },
+  "devDependencies": {
+    "sass": "^1.77.0"
+  }
+}
