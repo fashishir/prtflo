@@ -12,6 +12,35 @@
   const $$ = (s, c = document) => [...c.querySelectorAll(s)];
 
   /* ---------------------------------------------------------------
+     0. PAGE LOADER
+  --------------------------------------------------------------- */
+  const loader = $('#page-loader');
+  const hideLoader = () => {
+    if (!loader) return;
+    loader.classList.add('loaded');
+    setTimeout(() => loader.remove(), 700);
+  };
+  if (document.readyState === 'complete') hideLoader();
+  else window.addEventListener('load', hideLoader);
+
+  /* ---------------------------------------------------------------
+     0. CURSOR GLOW
+  --------------------------------------------------------------- */
+  const glow = $('#cursor-glow');
+  if (glow && !isTouch && !reduceMotion) {
+    let gx = 0, gy = 0, cx = 0, cy = 0;
+    window.addEventListener('mousemove', (e) => { gx = e.clientX; gy = e.clientY; }, { passive: true });
+    const moveGlow = () => {
+      cx += (gx - cx) * 0.08;
+      cy += (gy - cy) * 0.08;
+      glow.style.left = `${cx}px`;
+      glow.style.top = `${cy}px`;
+      requestAnimationFrame(moveGlow);
+    };
+    moveGlow();
+  }
+
+  /* ---------------------------------------------------------------
      1. THEME TOGGLE (persisted)
   --------------------------------------------------------------- */
   const themeBtn = $('#theme-toggle');
@@ -231,7 +260,59 @@
   }
 
   /* ---------------------------------------------------------------
-     11. THREE.JS ANIMATED BACKGROUND (particle network)
+     11. RIPPLE EFFECT ON BUTTONS
+  --------------------------------------------------------------- */
+  $$('.ripple, .btn, .fab').forEach(el => {
+    el.addEventListener('click', (e) => {
+      const rect = el.getBoundingClientRect();
+      const span = document.createElement('span');
+      span.className = 'ripple-span';
+      const size = Math.max(rect.width, rect.height);
+      span.style.width = span.style.height = `${size}px`;
+      span.style.left = `${e.clientX - rect.left - size / 2}px`;
+      span.style.top = `${e.clientY - rect.top - size / 2}px`;
+      el.appendChild(span);
+      setTimeout(() => span.remove(), 650);
+    });
+  });
+
+  /* ---------------------------------------------------------------
+     12. CV FILE SIZE / LAST UPDATED METADATA
+  --------------------------------------------------------------- */
+  const cvMeta = async () => {
+    const badges = $$('.cv-meta');
+    if (!badges.length) return;
+    try {
+      const res = await fetch('AKM_Faridul_Alam_Resume_Portfolio.pdf', { method: 'HEAD' });
+      if (!res.ok) return;
+      const len = res.headers.get('content-length');
+      const lm = res.headers.get('last-modified');
+      const size = len ? `PDF · ${(Number(len) / 1024 / 1024).toFixed(1)} MB` : 'PDF';
+      const date = lm ? new Date(lm).toLocaleDateString(undefined, { month: 'short', year: 'numeric' }) : '';
+      badges.forEach(b => {
+        const label = date ? `${size} · ${date}` : size;
+        b.textContent = label;
+        b.setAttribute('title', `CV updated ${date || 'recently'}`);
+      });
+    } catch {
+      badges.forEach(b => b.textContent = 'PDF');
+    }
+  };
+  cvMeta();
+
+  /* ---------------------------------------------------------------
+     13. BACK-TO-TOP
+  --------------------------------------------------------------- */
+  const topBtn = $('#back-to-top');
+  if (topBtn) {
+    const toggleTop = () => topBtn.classList.toggle('show', window.scrollY > 500);
+    window.addEventListener('scroll', toggleTop, { passive: true });
+    topBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    toggleTop();
+  }
+
+  /* ---------------------------------------------------------------
+     14. THREE.JS ANIMATED BACKGROUND (particle network)
   --------------------------------------------------------------- */
   function initThree() {
     if (reduceMotion || typeof THREE === 'undefined') return;
