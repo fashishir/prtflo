@@ -36,16 +36,16 @@
     <div id="cursor-glow" class="cursor-glow" aria-hidden="true"></div>
 
     <!-- 3D animated background -->
-    <canvas id="bg-canvas"></canvas>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
 
     <!-- Scroll progress -->
-    <div id="progress-bar"></div>
+    <div id="progress-bar" aria-hidden="true"></div>
 
     <!-- ===================== NAV ===================== -->
     <nav>
         <a href="#home" class="logo">FA.</a>
 
-        <ul class="nav-links">
+        <ul class="nav-links" id="nav-links">
             <li><a href="#home">Home</a></li>
             <li><a href="#experience">Experience</a></li>
             <li><a href="#projects">Projects</a></li>
@@ -76,7 +76,7 @@
                     <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
                 </svg>
             </button>
-            <div class="hamburger" aria-label="Menu"><span></span><span></span><span></span></div>
+            <button class="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="nav-links"><span></span><span></span><span></span></button>
         </div>
     </nav>
 
@@ -180,8 +180,8 @@
                     <div class="glare"></div>
                     <span class="num">03</span>
                     <h4>p-transbd.com</h4>
-                    <p>An E-Commerce Website where we sale Solar panel, Electrics products. using Hono ja, react
-                        native,Node.js,Cloudflare D1 database, drizzle ORM, etc to make this Website.</p>
+                    <p>An e-commerce site for solar panels and electrical products, built with Hono.js,
+                        React Native, Node.js, Cloudflare D1 and Drizzle ORM.</p>
                     <a class="link" href="https://p-transbd.com/" target="_blank" rel="noopener">View
                         Project →</a>
                 </article>
@@ -189,11 +189,10 @@
                 <article class="project-card tilt reveal">
                     <div class="glare"></div>
                     <span class="num">04</span>
-                    <h4>Multiplication Table App</h4>
-                    <p>A web application that generates and processes multiplication tables efficiently — tailored for
-                        children's learning.</p>
-                    <a class="link" href="https://claude.ai/public/artifacts/3b7da133-f2fe-403c-beb2-0b20ff9b1b2e/"
-                        target="_blank" rel="noopener">View Project →</a>
+                    <h4>Magic Coloring World</h4>
+                    <p>Interactive coloring web app designed for children</p>
+                    <a class="link" href="https://magic-coloring-world.netlify.app/" target="_blank" rel="noopener">View
+                        Project →</a>
                 </article>
             </div>
         </section>
@@ -294,12 +293,11 @@
 
                 <!--
                   CONTACT FORM
-                  To make it send real emails, create a free form at https://formspree.io,
-                  then replace YOUR_ID below with your endpoint id.
-                  Until then it gracefully falls back to opening the visitor's email app.
+                  No backend configured: submits open the visitor's email app.
+                  To enable direct delivery, add data-formspree="YOUR_ID" after
+                  creating a free form at https://formspree.io.
                 -->
-                <form id="contact-form" class="contact-form reveal" action="https://formspree.io/f/YOUR_ID"
-                    method="POST">
+                <form id="contact-form" class="contact-form reveal" method="POST" novalidate>
                     <div class="field">
                         <label for="name">Name</label>
                         <input type="text" id="name" name="name" placeholder="Your name" required>

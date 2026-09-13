@@ -333,6 +333,10 @@ nav {
   gap: 6px;
   cursor: pointer;
   z-index: 1100;
+  background: none;
+  border: none;
+  padding: 6px;
+  color: inherit;
   span {
     width: 26px; height: 2px;
     background: var(--text);

@@ -11,6 +11,11 @@
   const $  = (s, c = document) => c.querySelector(s);
   const $$ = (s, c = document) => [...c.querySelectorAll(s)];
 
+  const storage = {
+    get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch { /* private mode */ } },
+  };
+
   /* ---------------------------------------------------------------
      0. PAGE LOADER
   --------------------------------------------------------------- */
@@ -44,14 +49,14 @@
      1. THEME TOGGLE (persisted)
   --------------------------------------------------------------- */
   const themeBtn = $('#theme-toggle');
-  const savedTheme = localStorage.getItem('theme');
+  const savedTheme = storage.get('theme');
   if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
 
   themeBtn?.addEventListener('click', () => {
     const light = document.documentElement.getAttribute('data-theme') === 'light';
     const next = light ? 'dark' : 'light';
     document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
+    storage.set('theme', next);
     window.__setBgTheme?.(next);
   });
 
@@ -65,7 +70,8 @@
 
   const onScroll = () => {
     const h = document.documentElement;
-    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight);
+    const max = h.scrollHeight - h.clientHeight;
+    const scrolled = max > 0 ? h.scrollTop / max : 0;
     if (bar) bar.style.width = `${Math.min(scrolled * 100, 100)}%`;
     nav?.classList.toggle('scrolled', h.scrollTop > 30);
 
@@ -86,10 +92,14 @@
   --------------------------------------------------------------- */
   const burger = $('.hamburger');
   const menu = $('.nav-links');
-  const closeMenu = () => { menu?.classList.remove('open'); burger?.classList.remove('active'); };
+  const setMenu = (open) => {
+    menu?.classList.toggle('open', open);
+    burger?.classList.toggle('active', open);
+    burger?.setAttribute('aria-expanded', String(open));
+  };
+  const closeMenu = () => setMenu(false);
   burger?.addEventListener('click', () => {
-    menu.classList.toggle('open');
-    burger.classList.toggle('active');
+    setMenu(!menu?.classList.contains('open'));
   });
   navLinks.forEach(a => a.addEventListener('click', closeMenu));
 
@@ -229,14 +239,16 @@
   const form = $('#contact-form');
   if (form) {
     const status = $('#form-status');
-    const action = form.getAttribute('action') || '';
-    const usesFormspree = action.includes('formspree.io/f/') && !action.includes('YOUR_ID');
+    const endpointId = (form.dataset.formspree || '').trim();
+    const usesFormspree = /^[a-zA-Z0-9]+$/.test(endpointId);
+    const action = usesFormspree ? `https://formspree.io/f/${endpointId}` : '';
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const data = new FormData(form);
-      const name = data.get('name'), email = data.get('email'), msg = data.get('message');
+      const name = String(data.get('name') || '').trim(), email = String(data.get('email') || '').trim(), msg = String(data.get('message') || '').trim();
       status.className = 'form-status';
+      if (!name || !email || !msg) { status.className = 'form-status err'; status.textContent = 'Please complete name, email and message.'; return; }
       status.textContent = 'Sending…';
 
       if (usesFormspree) {
@@ -262,7 +274,8 @@
   /* ---------------------------------------------------------------
      11. RIPPLE EFFECT ON BUTTONS
   --------------------------------------------------------------- */
-  $$('.ripple, .btn, .fab').forEach(el => {
+  const rippleTargets = $$('.ripple');
+  rippleTargets.forEach(el => {
     el.addEventListener('click', (e) => {
       const rect = el.getBoundingClientRect();
       const span = document.createElement('span');
@@ -320,12 +333,12 @@
     if (!canvas) return;
 
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(70, innerWidth / innerHeight, 1, 1000);
     camera.position.z = 320;
 
-    const COUNT = innerWidth < 768 ? 80 : 160;
+    const COUNT = innerWidth < 768 ? 70 : 130;
     const positions = new Float32Array(COUNT * 3);
     const velocities = [];
     const SPREAD = 600;
@@ -362,16 +375,38 @@
     });
 
     const DIST = 90;
+    const DIST2 = DIST * DIST;
+    const CELL = DIST;
+    const grid = new Map();
+    const cellKey = (x, y, z) =>
+      `${Math.floor(x / CELL)},${Math.floor(y / CELL)},${Math.floor(z / CELL)}`;
     function connect() {
+      grid.clear();
+      for (let i = 0; i < COUNT; i++) {
+        const key = cellKey(positions[i * 3], positions[i * 3 + 1], positions[i * 3 + 2]);
+        let bucket = grid.get(key);
+        if (!bucket) { bucket = []; grid.set(key, bucket); }
+        bucket.push(i);
+      }
       const segs = [];
       for (let i = 0; i < COUNT; i++) {
-        for (let j = i + 1; j < COUNT; j++) {
-          const dx = positions[i*3] - positions[j*3];
-          const dy = positions[i*3+1] - positions[j*3+1];
-          const dz = positions[i*3+2] - positions[j*3+2];
-          if (dx*dx + dy*dy + dz*dz < DIST*DIST) {
-            segs.push(positions[i*3], positions[i*3+1], positions[i*3+2],
-                      positions[j*3], positions[j*3+1], positions[j*3+2]);
+        const ix = positions[i * 3], iy = positions[i * 3 + 1], iz = positions[i * 3 + 2];
+        const cx = Math.floor(ix / CELL), cy = Math.floor(iy / CELL), cz = Math.floor(iz / CELL);
+        for (let ox = -1; ox <= 1; ox++) {
+          for (let oy = -1; oy <= 1; oy++) {
+            for (let oz = -1; oz <= 1; oz++) {
+              const bucket = grid.get(`${cx + ox},${cy + oy},${cz + oz}`);
+              if (!bucket) continue;
+              for (const j of bucket) {
+                if (j <= i) continue;
+                const dx = ix - positions[j * 3];
+                const dy = iy - positions[j * 3 + 1];
+                const dz = iz - positions[j * 3 + 2];
+                if (dx * dx + dy * dy + dz * dz < DIST2) {
+                  segs.push(ix, iy, iz, positions[j * 3], positions[j * 3 + 1], positions[j * 3 + 2]);
+                }
+              }
+            }
           }
         }
       }
@@ -387,7 +422,11 @@
     resize();
 
     let frame = 0;
+    let rafId = 0;
+    let paused = document.hidden;
     function animate() {
+      rafId = 0;
+      if (paused) return;
       for (let i = 0; i < COUNT; i++) {
         for (let k = 0; k < 3; k++) {
           const idx = i*3 + k;
@@ -397,7 +436,7 @@
         }
       }
       geo.attributes.position.needsUpdate = true;
-      if (frame % 2 === 0) connect();            // rebuild lines every other frame
+      if (frame % 3 === 0) connect();            // rebuild lines every third frame
       points.rotation.y += 0.0006;
       lineSeg.rotation.y += 0.0006;
       camera.position.x += (mouse.x * 80 - camera.position.x) * 0.04;
@@ -405,8 +444,12 @@
       camera.lookAt(scene.position);
       renderer.render(scene, camera);
       frame++;
-      requestAnimationFrame(animate);
+      rafId = requestAnimationFrame(animate);
     }
+    document.addEventListener('visibilitychange', () => {
+      paused = document.hidden;
+      if (!paused && !rafId) animate();
+    });
     animate();
   }
 
