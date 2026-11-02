@@ -177,9 +177,9 @@ body.book-page {
 /* ==================== COVERS ==================== */
 .cover-front, .cover-back {
     background:
-        radial-gradient(120% 90% at 20% 0%, rgba(0, 229, 255, 0.16), transparent 55%),
-        radial-gradient(120% 90% at 85% 100%, rgba(168, 85, 247, 0.18), transparent 55%),
-        linear-gradient(160deg, #0b0b14, #06060a 55%, #0e0a16);
+        radial-gradient(120% 90% at 20% 0%, rgba(16, 185, 129, 0.16), transparent 55%),
+        radial-gradient(120% 90% at 85% 100%, rgba(245, 158, 11, 0.18), transparent 55%),
+        linear-gradient(160deg, #0a0f1a, #030712 55%, #071518);
     border: 1px solid rgba(255, 255, 255, 0.15);
 }
 [data-theme="light"] .cover-front,
@@ -268,8 +268,8 @@ body.book-page {
     animation: hint-pulse 2.4s ease-in-out infinite;
 }
 @keyframes hint-pulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(0, 229, 255, 0.25); }
-    50% { box-shadow: 0 0 24px 4px rgba(0, 229, 255, 0.25); }
+    0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.25); }
+    50% { box-shadow: 0 0 24px 4px rgba(16, 185, 129, 0.25); }
 }
 
 .link-home {
@@ -553,8 +553,8 @@ body.book-page {
     border-radius: 20px;
     margin-bottom: 10px;
     color: var(--accent-2);
-    border: 1px solid rgba(168, 85, 247, 0.4);
-    background: rgba(168, 85, 247, 0.08);
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    background: rgba(245, 158, 11, 0.08);
 }
 
 /* work list */

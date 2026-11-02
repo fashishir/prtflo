@@ -16,10 +16,14 @@
 
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    <meta name="theme-color" content="#030712">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/book.css?v=4">
+    <link rel="stylesheet" href="css/main.css?v=4">
+    <link rel="stylesheet" href="css/book.css?v=5">
 </head>
 
 <body class="book-page">
@@ -31,7 +35,16 @@
     </div>
 
     <!-- Cursor glow -->
+    <!-- 3D Style Mouse Cursor -->
+    <div id="cursor-dot" class="cursor-dot" aria-hidden="true"></div>
+    <div id="cursor-ring" class="cursor-ring" aria-hidden="true">
+        <div class="ring-orbit"></div>
+    </div>
     <div id="cursor-glow" class="cursor-glow" aria-hidden="true"></div>
+
+    <!-- Cinematic FX overlays (grain + vignette) -->
+    <div class="fx-vignette" aria-hidden="true"></div>
+    <div class="fx-grain" aria-hidden="true"></div>
 
     <!-- 3D animated background -->
     <canvas id="bg-canvas" aria-hidden="true"></canvas>
@@ -50,7 +63,7 @@
         </ul>
 
         <div class="nav-right">
-            <a href="AKM_Faridul_Alam_Resume_Portfolio.pdf" download class="btn cv-nav ripple"
+            <a href="AKM_Faridul_Alam_CV_With_Photo_final.pdf" download="AKM_Faridul_Alam_CV.pdf" class="btn cv-nav ripple"
                 aria-label="Download CV as PDF" title="Download CV">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                     stroke-linecap="round" stroke-linejoin="round">
@@ -59,7 +72,8 @@
                 <span class="cv-label">CV</span>
             </a>
 
-            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle light / dark">
+            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle light / dark"
+                aria-pressed="false">
                 <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round">
                     <circle cx="12" cy="12" r="4" />
@@ -90,7 +104,7 @@
                             <div class="cover-photo"><img src="Photo.jpg" alt="A.K.M Faridul Alam"></div>
                             <span class="cover-kicker">Interactive Résumé · 2026</span>
                             <h2>A.K.M <em>Faridul Alam</em></h2>
-                            <p>Software Engineer &amp;AI-Powered Full-Stack Developer & Automation Engineer.</p>
+                            <p>Software Engineer &amp; AI-Powered Full-Stack Developer &amp; Automation Engineer.</p>
                             <span class="open-hint">Open the book
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                     stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -303,7 +317,7 @@
                                     </svg>
                                 </a>
                             </div>
-                            <a href="AKM_Faridul_Alam_Resume_Portfolio.pdf" download class="btn primary book-download">
+                            <a href="AKM_Faridul_Alam_CV_With_Photo_final.pdf" download="AKM_Faridul_Alam_CV.pdf" class="btn primary book-download">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                     stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M12 3v12M7 10l5 5 5-5M5 21h14" />
@@ -410,8 +424,8 @@
 
     <!-- Three.js (deferred) + shared app + book logic -->
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script defer src="js/main.js"></script>
-    <script defer src="js/book.js?v=3"></script>
+    <script defer src="js/main.js?v=4"></script>
+    <script defer src="js/book.js?v=4"></script>
 </body>
 
 </html>

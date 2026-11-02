@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="A.K.M Faridul Alam — Software Engineer & AI-Powered Full-Stack Developer & Automation Engineer. Glossy, interactive 3D portfolio.">
+        content="A.K.M Faridul Alam — Software Engineer & AI-Powered Full-Stack Developer & Automation Engineer. Premium cinematic 3D interactive portfolio.">
     <meta name="author" content="A.K.M Faridul Alam">
 
-    <title>A.K.M Faridul Alam | Software Engineer & AI-Powered Full-Stack Developer & Automation Engineer</title>
+    <title>A.K.M Faridul Alam | Software Engineer & AI-Powered Full-Stack Developer</title>
 
     <!-- Open Graph -->
     <meta property="og:title" content="A.K.M Faridul Alam | Portfolio">
@@ -19,9 +19,14 @@
 
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    <meta name="theme-color" content="#030712">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="preload" href="Photo.jpg" as="image">
+    <link rel="stylesheet" href="css/main.css?v=4">
 </head>
 
 <body>
@@ -32,8 +37,16 @@
         <span class="loader-text">FA.</span>
     </div>
 
-    <!-- Cursor glow -->
+    <!-- 3D Style Mouse Cursor -->
+    <div id="cursor-dot" class="cursor-dot" aria-hidden="true"></div>
+    <div id="cursor-ring" class="cursor-ring" aria-hidden="true">
+        <div class="ring-orbit"></div>
+    </div>
     <div id="cursor-glow" class="cursor-glow" aria-hidden="true"></div>
+
+    <!-- Cinematic FX overlays (grain + vignette) -->
+    <div class="fx-vignette" aria-hidden="true"></div>
+    <div class="fx-grain" aria-hidden="true"></div>
 
     <!-- 3D animated background -->
     <canvas id="bg-canvas" aria-hidden="true"></canvas>
@@ -42,7 +55,7 @@
     <div id="progress-bar" aria-hidden="true"></div>
 
     <!-- ===================== NAV ===================== -->
-    <nav>
+    <nav role="navigation" aria-label="Main Navigation">
         <a href="#home" class="logo">FA.</a>
 
         <ul class="nav-links" id="nav-links">
@@ -55,7 +68,7 @@
         </ul>
 
         <div class="nav-right">
-            <a href="AKM_Faridul_Alam_Resume_Portfolio.pdf" download class="btn cv-nav ripple"
+            <a href="AKM_Faridul_Alam_CV_With_Photo_final.pdf" download="AKM_Faridul_Alam_CV.pdf" class="btn cv-nav ripple"
                 aria-label="Download CV as PDF" title="Download CV">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                     stroke-linecap="round" stroke-linejoin="round">
@@ -64,7 +77,8 @@
                 <span class="cv-label">CV</span>
             </a>
 
-            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle light / dark">
+            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle light / dark"
+                aria-pressed="false">
                 <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round">
                     <circle cx="12" cy="12" r="4" />
@@ -80,25 +94,25 @@
         </div>
     </nav>
 
-    <main class="container">
+    <main class="container" role="main">
 
         <!-- ===================== HERO ===================== -->
         <section id="home" class="hero">
-            <div class="hero-content reveal">
+            <div class="hero-content">
                 <span class="greeting" id="greeting">Hello</span>
                 <h1>A.K.M <span class="grad-text">Faridul Alam</span></h1>
                 <div class="role-line"><span id="role"></span><span class="cursor"></span></div>
                 <p class="lead">I build exceptional, accessible and dynamic digital experiences. Currently looking to
                     apply my knowledge in the IT industry to drive organizational growth.</p>
                 <div class="hero-actions">
-                    <a href="#contact" class="btn primary">
+                    <a href="#contact" class="btn primary magnetic">
                         Get In Touch
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2.5" stroke-linecap="round">
                             <path d="M5 12h14M13 6l6 6-6 6" />
                         </svg>
                     </a>
-                    <a href="book.html" class="btn ghost ripple">
+                    <a href="book.html" class="btn ghost ripple magnetic">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path
@@ -106,19 +120,19 @@
                         </svg>
                         View Book CV
                     </a>
-                    <a href="AKM_Faridul_Alam_Resume_Portfolio.pdf" download class="btn ghost cv-download ripple"
+                    <a href="AKM_Faridul_Alam_CV_With_Photo_final.pdf" download="AKM_Faridul_Alam_CV.pdf" class="btn ghost cv-download ripple"
                         aria-label="Download CV as PDF">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M12 3v12M7 10l5 5 5-5M5 21h14" />
                         </svg>
                         Download CV
-                        <span class="cv-meta" data-cv="AKM_Faridul_Alam_Resume_Portfolio.pdf">PDF</span>
+                        <span class="cv-meta" data-cv="AKM_Faridul_Alam_CV_With_Photo_final.pdf">PDF</span>
                     </a>
                 </div>
             </div>
 
-            <div class="hero-image reveal">
+            <div class="hero-image">
                 <div class="photo-stage">
                     <div class="photo-ring"></div>
                     <div class="photo-frame">
@@ -128,6 +142,12 @@
                     <div class="float-chip c2"><i></i> Full-Stack Dev</div>
                 </div>
             </div>
+
+            <!-- Scroll prompt indicator -->
+            <div class="hero-scroll-indicator" aria-hidden="true">
+                <div class="scroll-line"></div>
+                <span>Scroll</span>
+            </div>
         </section>
 
         <!-- ===================== EXPERIENCE ===================== -->
@@ -135,14 +155,13 @@
             <h2 class="section-title reveal">Where I've Worked</h2>
             <p class="section-sub reveal">My professional journey so far.</p>
 
-            <div class="timeline">
-                <article class="exp-card reveal">
+            <div class="timeline reveal-group">
+                <article class="exp-card">
                     <h4>Data Assistant — Directorate General of Health Services</h4>
                     <span class="date">Jun 2020 – Dec 2024 · Covid-19 ERPP Project</span>
                     <ul>
                         <li>Analyzed complex datasets for the National Covid-19 Database.</li>
-                        <li>Managed the online Database System of DGHS 2 and the National COVID-19 Surveillance System.
-                        </li>
+                        <li>Managed the online Database System of DGHS 2 and the National COVID-19 Surveillance System.</li>
                         <li>Gained practical experience with the Human Resource Information System (HRIS).</li>
                         <li>Worked efficiently with MIS (Management Information Systems), DGHS.</li>
                     </ul>
@@ -153,55 +172,55 @@
         <!-- ===================== PROJECTS ===================== -->
         <section id="projects" class="section">
             <h2 class="section-title reveal">Things I've Built</h2>
-            <p class="section-sub reveal">A selection of projects I've crafted.</p>
+            <p class="section-sub reveal">A selection of projects I've crafted with precision.</p>
 
-            <div class="projects-grid">
-                <article class="project-card tilt reveal">
+            <div class="projects-grid reveal-group">
+                <article class="project-card tilt">
                     <div class="glare"></div>
                     <span class="num">01</span>
                     <h4>Nexus Specialized Dental Care</h4>
-                    <p>A Dental Clinic Website built with modern web tech and Typescript,Node.js,D1 database,Drizzle
+                    <p>A Dental Clinic Website built with modern web tech and TypeScript, Node.js, D1 database, Drizzle
                         ORM, for a seamless user experience.</p>
                     <a class="link" href="https://nexus-dental-care.fashishir4.workers.dev/" target="_blank"
-                        rel="noopener">View Project →</a>
+                        rel="noopener noreferrer">View Project →</a>
                 </article>
 
-                <article class="project-card tilt reveal">
+                <article class="project-card tilt">
                     <div class="glare"></div>
                     <span class="num">02</span>
                     <h4>AI RoadMap</h4>
                     <p>Personalized, pragmatic AI learning paths for doctors, product managers, designers, students, and
                         professionals — answering What, Why, and How with honest timelines.</p>
                     <a class="link" href="https://ai-roadmap.fashishir4.workers.dev/" target="_blank"
-                        rel="noopener">View Project →</a>
+                        rel="noopener noreferrer">View Project →</a>
                 </article>
 
-                <article class="project-card tilt reveal">
+                <article class="project-card tilt">
                     <div class="glare"></div>
                     <span class="num">03</span>
                     <h4>FA Chat</h4>
                     <p>An AI-powered chatbot designed for regular everyday life — quick answers, conversations,
                         and assistance at your fingertips.</p>
                     <a class="link" href="https://ai-chat.fashishir4.workers.dev/" target="_blank"
-                        rel="noopener">View Project →</a>
+                        rel="noopener noreferrer">View Project →</a>
                 </article>
 
-                <article class="project-card tilt reveal">
+                <article class="project-card tilt">
                     <div class="glare"></div>
                     <span class="num">04</span>
                     <h4>p-transbd.com</h4>
                     <p>An e-commerce site for solar panels and electrical products, built with Hono.js,
                         React Native, Node.js, Cloudflare D1 and Drizzle ORM.</p>
-                    <a class="link" href="https://p-transbd.com/" target="_blank" rel="noopener">View
+                    <a class="link" href="https://p-transbd.com/" target="_blank" rel="noopener noreferrer">View
                         Project →</a>
                 </article>
 
-                <article class="project-card tilt reveal">
+                <article class="project-card tilt">
                     <div class="glare"></div>
                     <span class="num">05</span>
                     <h4>Magic Coloring World</h4>
-                    <p>Interactive coloring web app designed for children</p>
-                    <a class="link" href="https://magic-coloring-world.netlify.app/" target="_blank" rel="noopener">View
+                    <p>Interactive coloring web app designed for children with dynamic canvas rendering and intuitive touch controls.</p>
+                    <a class="link" href="https://magic-coloring-world.netlify.app/" target="_blank" rel="noopener noreferrer">View
                         Project →</a>
                 </article>
             </div>
@@ -210,7 +229,7 @@
         <!-- ===================== SKILLS ===================== -->
         <section id="skills" class="section">
             <h2 class="section-title reveal">My Tech Stack</h2>
-            <p class="section-sub reveal">Drag your cursor over the sphere — technologies I work with.</p>
+            <p class="section-sub reveal">Drag your cursor or swipe over the sphere — technologies I work with.</p>
 
             <div class="skills-stage reveal">
                 <div id="skill-sphere">
@@ -240,7 +259,7 @@
             <p class="section-sub reveal">Have a project in mind or just want to say hi? Drop me a message.</p>
 
             <div class="contact-wrap">
-                <div class="contact-info reveal">
+                <div class="contact-info reveal-group">
                     <p class="lead">I'm currently open to new opportunities and collaborations. Feel free to reach out
                         through the form or directly.</p>
 
@@ -266,25 +285,25 @@
                         <div><span class="label">Phone</span><a href="tel:+8801407587330">+880 1407 587330</a></div>
                     </div>
 
-                    <a href="AKM_Faridul_Alam_Resume_Portfolio.pdf" download class="btn ghost cv-contact ripple"
+                    <a href="AKM_Faridul_Alam_CV_With_Photo_final.pdf" download="AKM_Faridul_Alam_CV.pdf" class="btn ghost cv-contact ripple"
                         aria-label="Download CV as PDF">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M12 3v12M7 10l5 5 5-5M5 21h14" />
                         </svg>
                         Download CV
-                        <span class="cv-meta" data-cv="AKM_Faridul_Alam_Resume_Portfolio.pdf">PDF</span>
+                        <span class="cv-meta" data-cv="AKM_Faridul_Alam_CV_With_Photo_final.pdf">PDF</span>
                     </a>
 
                     <div class="socials">
-                        <a href="https://github.com/fashishir" target="_blank" rel="noopener" aria-label="GitHub"
+                        <a href="https://github.com/fashishir" target="_blank" rel="noopener noreferrer" aria-label="GitHub"
                             title="GitHub">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                                 <path
                                     d="M12 .5C5.7.5.5 5.7.5 12a11.5 11.5 0 0 0 7.9 10.9c.6.1.8-.2.8-.5v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 0-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17 4.6 18 4.9 18 4.9c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.6.8.5A11.5 11.5 0 0 0 23.5 12C23.5 5.7 18.3.5 12 .5z" />
                             </svg>
                         </a>
-                        <a href="https://gitlab.com/fashishir4" target="_blank" rel="noopener" aria-label="GitLab"
+                        <a href="https://gitlab.com/fashishir4" target="_blank" rel="noopener noreferrer" aria-label="GitLab"
                             title="GitLab">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                                 <path
@@ -310,18 +329,18 @@
                 <form id="contact-form" class="contact-form reveal" method="POST" novalidate>
                     <div class="field">
                         <label for="name">Name</label>
-                        <input type="text" id="name" name="name" placeholder="Your name" required>
+                        <input type="text" id="name" name="name" placeholder="Your name" required autocomplete="name">
                     </div>
                     <div class="field">
                         <label for="email">Email</label>
-                        <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                        <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email">
                     </div>
                     <div class="field">
                         <label for="message">Message</label>
                         <textarea id="message" name="message" placeholder="Tell me about your project…"
                             required></textarea>
                     </div>
-                    <button type="submit" class="btn primary">
+                    <button type="submit" class="btn primary magnetic">
                         Send Message
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -336,12 +355,12 @@
 
     <!-- ===================== FOOTER ===================== -->
     <footer id="footer">
-        <p>© <span id="year">2026</span> A.K.M Faridul Alam · Built with passion, JavaScript &amp; SCSS.</p>
+        <p>© <span id="year">2026</span> A.K.M Faridul Alam · Crafted with Precision, JavaScript &amp; SCSS.</p>
     </footer>
 
     <!-- Fixed floating actions -->
     <div class="floating-actions" aria-label="Quick actions">
-        <a href="AKM_Faridul_Alam_Resume_Portfolio.pdf" download class="fab fab-cv ripple"
+        <a href="AKM_Faridul_Alam_CV_With_Photo_final.pdf" download="AKM_Faridul_Alam_CV.pdf" class="fab fab-cv ripple"
             aria-label="Download CV as PDF" title="Download CV">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                 stroke-linecap="round" stroke-linejoin="round">
@@ -359,7 +378,7 @@
 
     <!-- Three.js (deferred) + app -->
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script defer src="js/main.js"></script>
+    <script defer src="js/main.js?v=4"></script>
 </body>
 
 </html>
